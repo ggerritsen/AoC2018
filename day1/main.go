@@ -8,12 +8,10 @@ import (
 	"strconv"
 )
 
-var frequency int64 = 0
 
 func main() {
-
-	fmt.Printf("Starting with frequency %d...\n", frequency)
-
+	freq  := int64(0)
+	fmt.Printf("Starting with frequency %d...\n", freq)
 
 	f, err := os.Open("input.txt")
 	if err != nil {
@@ -22,28 +20,27 @@ func main() {
 
 	s := bufio.NewScanner(f)
 	for s.Scan() {
-		if err := updateFrequency(s.Text()); err != nil {
+		freq, err = updateFrequency(freq, s.Text())
+		if err != nil {
 			log.Fatal(err)
 		}
 	}
 
-	fmt.Printf("End with frequency %d.\n", frequency)
+	fmt.Printf("End with frequency %d.\n", freq)
 }
 
-func updateFrequency(s string) error {
+func updateFrequency(f int64, s string) (int64, error) {
 	operator := string(s[0])
 	operand, err := strconv.ParseInt(s[1:], 10, 64)
 	if err != nil {
-		return err
+		return 0, err
 	}
 
 	if operator == "+" {
-		frequency = frequency + operand
+		return f + operand, nil
 	} else if operator == "-" {
-		frequency = frequency - operand
+		return f - operand, nil
 	} else {
-		return fmt.Errorf("unknown operator")
+		return 0, fmt.Errorf("unknown operator")
 	}
-
-	return nil
 }
