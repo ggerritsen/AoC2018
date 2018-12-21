@@ -25,7 +25,7 @@ func init() {
 func main() {
 	fmt.Printf("Starting with input of size %d.\n", len(input))
 
-	twos := 1 //countTwos(input)
+	twos := countTwos(input)
 	threes := countThrees(input)
 
 	fmt.Printf("twos is %d\n", twos)
@@ -41,6 +41,7 @@ func countTwos(ids []string) int {
 		for _, v := range countChars(id) {
 			if v == 2 {
 				twos = twos + 1
+				break
 			}
 		}
 	}
@@ -52,13 +53,10 @@ func countThrees(ids []string) int {
 	threes := 0
 
 	for _, id := range ids {
-		counts := countChars(id)
-		fmt.Printf("%+v\n", counts)
-		for k, v := range counts {
+		for _, v := range countChars(id) {
 			if v == 3 {
-				fmt.Printf("Found a 3 (%s)! %+v\n", k, id)
 				threes = threes + 1
-				fmt.Printf("Threes is now %d.\n", threes)
+				break
 			}
 		}
 	}
