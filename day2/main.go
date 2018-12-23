@@ -32,6 +32,35 @@ func main() {
 	fmt.Printf("threes is %d\n", threes)
 
 	fmt.Printf("Ending with checksum: %d.\n", twos * threes)
+
+	id1, id2 := findSingleDiff(input)
+	fmt.Printf("Found 1 difference between %q and %q.\n", id1, id2)
+}
+
+func findSingleDiff(ids []string) (string, string) {
+	for _, curId := range ids {
+		for _, id := range ids {
+			if curId == id {
+				continue
+			}
+
+			if charDiff(curId, id) == 1 {
+				return curId, id
+			}
+		}
+	}
+
+	return "", ""
+}
+
+func charDiff(s1, s2 string) int {
+	diff := 0
+	for i := 0; i < len(s1); i++ {
+		if s1[i] != s2[i] {
+			diff = diff +1
+		}
+	}
+	return diff
 }
 
 func countTwos(ids []string) int {
