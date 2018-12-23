@@ -1,5 +1,5 @@
 # Advent of Code 2018
 
-ggerritsen's submission. 
+Exercises for AoC's 2018 exercises. 
 
 
