@@ -10,11 +10,11 @@ import (
 )
 
 type claim struct {
-	id string
+	id                  string
 	x, y, width, height int64
 }
 
-var input []*claim
+var claims []*claim
 
 func init() {
 	f, err := os.Open("input.txt")
@@ -29,7 +29,7 @@ func init() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		input = append(input, claim)
+		claims = append(claims, claim)
 	}
 }
 
@@ -38,6 +38,8 @@ func parse(s string) (*claim, error) {
 	measures := strings.Split(spl[1], ":")
 	coords := strings.Split(measures[0], ",")
 	dimensions := strings.Split(measures[1], "x")
+
+	id := strings.TrimSpace(spl[0])
 
 	x, err := strconv.ParseInt(strings.TrimSpace(coords[0]), 10, 0)
 	if err != nil {
@@ -59,17 +61,36 @@ func parse(s string) (*claim, error) {
 		return nil, err
 	}
 
-	return &claim{
-		id: strings.TrimSpace(spl[0]),
-		x : x,
-		y : y,
-		width: width,
-		height: height,
-	}, nil
+	return &claim{id, x, y, width, height}, nil
 }
 
 func main() {
-	fmt.Printf("Starting with input of size %d.\n", len(input))
-	fmt.Printf("Here: %+v\n", input[1372])
-}
+	fmt.Printf("Starting with %d claims.\n", len(claims))
 
+	// create grid
+	grid := make([][][]string, 1000)
+	for i := 0; i < 1000; i++ {
+		grid[i] = make([][]string, 1000)
+	}
+
+	// fill grid with claims
+	for _, claim := range claims {
+		for x := claim.x; x < claim.x + claim.width; x++ {
+			for y := claim.y; y < claim.y + claim.height; y++ {
+				grid[x][y] = append(grid[x][y], claim.id)
+			}
+		}
+	}
+
+	// count overlap: cells with more than 1 claim id
+	overlap := 0
+	for i:=0; i<1000; i++ {
+		for j:=0; j<1000; j++ {
+			if len(grid[i][j]) > 1 {
+				overlap = overlap + 1
+			}
+		}
+	}
+
+	fmt.Printf("Done, overlap: %d.\n", overlap)
+}
