@@ -92,5 +92,30 @@ func main() {
 		}
 	}
 
+	// source ids
+	ids := make(map[string]bool, len(claims))
+	for i:=0; i<len(claims); i++ {
+		ids[claims[i].id] = true
+	}
+
+	for i:=0; i<1000; i++ {
+		for j:=0; j<1000; j++ {
+			cell := grid[i][j]
+			if len(cell) > 1 {
+				for k := 0; k < len(cell); k++ {
+					ids[cell[k]] = false
+				}
+			}
+		}
+	}
+
+	found := ""
+	for k, v := range ids {
+		if v {
+			found = k
+		}
+	}
+
 	fmt.Printf("Done, overlap: %d.\n", overlap)
+	fmt.Printf("Done, id: %+v.\n", found)
 }
