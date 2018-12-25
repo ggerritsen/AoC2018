@@ -81,7 +81,21 @@ func main() {
 		}
 	}
 
-	fmt.Printf("Guard %q is asleep most at minute: %d\n", mostAsleepId, minute)
+	fmt.Printf("Strategy 1: Guard %q is asleep most at minute: %d\n", mostAsleepId, minute)
+
+	max, maxMinute := 0, 0
+	maxId := ""
+	for id, time := range guards {
+		for i:=0; i<len(time); i++ {
+			if max < time[i] {
+				max = time[i]
+				maxId = id
+				maxMinute = i
+			}
+		}
+	}
+
+	fmt.Printf("Strategy 2: Guard %q is asleep most at minute: %d\n", maxId, maxMinute)
 }
 
 func calcAsleep(t []int) int {
