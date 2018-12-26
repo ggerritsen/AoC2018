@@ -27,6 +27,12 @@ func main() {
 	fmt.Printf("End with polymer: %s\n", result)
 	fmt.Printf("End with size: %d\n", len(result))
 
+	for i:=65; i<91; i++ {
+		r := strings.Replace(strings.Replace(result, string(i), "", -1), string(i + 32), "", -1)
+		r = iter(r)
+		fmt.Printf("Removing %c ends with size: %d\n", i, len(r))
+	}
+
 }
 
 func iter(s string) string {
